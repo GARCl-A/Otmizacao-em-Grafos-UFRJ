@@ -4,8 +4,9 @@
 #include <ctime>
 #include "linked_list.hpp"
 #include "lcr.hpp"
+#include "grasp_constructive.hpp"
 
-void grasp_constructive(const std::vector<int>& profits, const std::vector<int>& weights, const std::vector<std::vector<int>>& forfeit_pairs, int capacity, float alpha) {
+SolutionResult grasp_constructive(const std::vector<int>& profits, const std::vector<int>& weights, const std::vector<std::vector<int>>& forfeit_pairs, int capacity, float alpha) {
   // Criação da solution_line
   LinkedList solution_line;
   for (int i = 0; i < profits.size(); i++) {
@@ -13,11 +14,11 @@ void grasp_constructive(const std::vector<int>& profits, const std::vector<int>&
       solution_line.addNode(i);
     }
   }
-  solution_line.printList();
+  // solution_line.printList();
 
   // Criação da solution
   LinkedList solution;
-  solution.printList();
+  // solution.printList();
 
   // Variáveis para manter o peso e o lucro da solução
   int solution_weight = 0;
@@ -25,11 +26,11 @@ void grasp_constructive(const std::vector<int>& profits, const std::vector<int>&
 
   // Enquanto solution_line não estiver vazia
   while (solution_line.getSize() > 0) {
-    std::cout << "executando" << std::endl;
+    // std::cout << "executando" << std::endl;
     // Construindo lcr a partir de solution_line
     LinkedList lcr_list = lcr(solution_line, profits, weights, alpha);
-    std::cout << "lcr_list" << std::endl;
-    lcr_list.printList();
+    // std::cout << "lcr_list" << std::endl;
+    // lcr_list.printList();
 
     // Escolhe um elemento aleatório de lcr
     srand(time(NULL)); // Inicializa o gerador de números aleatórios
@@ -48,8 +49,8 @@ void grasp_constructive(const std::vector<int>& profits, const std::vector<int>&
     // Soma profits[elemento] a solution_profit
     solution_profit += profits[random_element];
 
-    solution_line.printList();
-    solution.printList();
+    // solution_line.printList();
+    // solution.printList();
 
     // Itera sobre solution_line para remover elementos
     Node* currentNode = solution_line.getHead();
@@ -58,7 +59,7 @@ void grasp_constructive(const std::vector<int>& profits, const std::vector<int>&
 
       // Remove elementos que weights[i] > (capacity - solution_weight)
       if (weights[current_element] > (capacity - solution_weight)) {
-        std::cout << "remove por peso: " << current_element << std::endl;
+        // std::cout << "remove por peso: " << current_element << std::endl;
         Node* nextNode = currentNode->next;
         solution_line.removeNodeByData(current_element);
         currentNode = nextNode;
@@ -67,7 +68,7 @@ void grasp_constructive(const std::vector<int>& profits, const std::vector<int>&
 
       // Remove elementos que têm conflito com o elemento
       if (forfeit_pairs[random_element][current_element] == 1) {
-        std::cout << "remove por par: " << current_element << std::endl;
+        // std::cout << "remove por par: " << current_element << std::endl;
         Node* nextNode = currentNode->next;
         solution_line.removeNodeByData(current_element);
         currentNode = nextNode;
@@ -83,4 +84,7 @@ void grasp_constructive(const std::vector<int>& profits, const std::vector<int>&
   solution.printList();
   std::cout << "Solution Weight: " << solution_weight << std::endl;
   std::cout << "Solution Profit: " << solution_profit << std::endl;
+
+  // Retorna a solução, o peso da solução e o lucro
+  return { solution, solution_weight, solution_profit };
 }
