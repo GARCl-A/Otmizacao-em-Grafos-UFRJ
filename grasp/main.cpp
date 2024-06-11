@@ -30,7 +30,8 @@ int main(int argc, char *argv[]) {
   KnapsackData data = input(filename);
 
   Solution solution_star;
-  while (true) {
+  int k = 0;
+  while (k < 50) {
     Solution solution = grasp_constructive(
       data.profits, 
       data.weights, 
@@ -49,11 +50,8 @@ int main(int argc, char *argv[]) {
 
     if (improved_solution.profit > solution_star.profit) {
       solution_star = improved_solution;
-      
-      if (improved_solution.profit == solution.profit) {
-        break;
-      }
     }
+    k++;
   }
 
   // Imprime a solução, o peso da solução e o lucro

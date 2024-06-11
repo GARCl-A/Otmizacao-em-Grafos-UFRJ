@@ -37,7 +37,7 @@ Solution grasp_constructive(
   int solution_profit = 0;
 
   // Enquanto solution_line não estiver vazia
-  while (evaluated_items > 0 || solution_weight >= capacity) {
+  while (evaluated_items > 0 || solution_weight == capacity) {
     cout << "executando" << endl;
     // Construindo lcr a partir de solution_line
     vector<int> lcr_list = lcr(
