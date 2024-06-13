@@ -5,6 +5,8 @@
 #include "../utils/input.hpp"
 #include "../utils/input.cpp"
 #include "../utils/grasp_constructive.hpp"
+#include "../utils/lcr.hpp"
+#include "../utils/lcr.cpp"
 
 using namespace std;
 
@@ -79,7 +81,17 @@ Solution BT(const KnapsackData& data, int criterio_parada) {
     return melhor_solucao;
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+    const char *filename;
+
+    // Check for the correct number of arguments
+    if (argc < 2) {
+        cerr << "Usage: " << argv[0] << " <file_path> [alpha]\n";
+        return EXIT_FAILURE;
+    }
+
+    filename = argv[1];
+
     // Lê os dados do arquivo
     KnapsackData data = input("input.txt");
 
@@ -89,12 +101,11 @@ int main() {
     // Chamando a função de busca tabu
     Solution melhor_solucao = BT(data, criterio_parada);
 
-    // Imprimindo a melhor solução encontrada
-    for (int item : melhor_solucao.items) {
-        cout << "Item: " << item << " Valor: " << data.profits[item] << " Peso: " << data.weights[item] << endl;
-    }
-    cout << "Total Weight: " << melhor_solucao.weight << endl;
-    cout << "Total Profit: " << melhor_solucao.profit << endl;
+  // Imprime a solução, o peso da solução e o lucro
+  cout << "Solution: ";
+  print_list(melhor_solucao.items);
+  cout << "Solution Weight: " << melhor_solucao.weight << endl;
+  cout << "Solution Profit: " << melhor_solucao.profit << endl;
 
     return 0;
 }
