@@ -2,13 +2,25 @@
 #include <algorithm>
 #include <climits>
 #include <iostream>
+#include <deque>
+#include <unordered_set>
 #include "../utils/input.hpp"
-#include "../utils/input.cpp"
 #include "../utils/grasp_constructive.hpp"
 #include "../utils/lcr.hpp"
-#include "../utils/lcr.cpp"
 
 using namespace std;
+typedef std::deque<Solution>::size_type deque_size_type;
+
+// Hash para a estrutura Solution para usar em unordered_set
+struct SolutionHash {
+    size_t operator()(const Solution& sol) const {
+        size_t seed = sol.items.size();
+        for (auto& i : sol.items) {
+            seed ^= i + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+        }
+        return seed ^ (sol.weight + sol.profit);
+    }
+};
 
 // Função para calcular o custo de uma solução
 int custo(const Solution& solucao, const KnapsackData& data) {
@@ -49,12 +61,15 @@ vector<Solution> gera_vizinhos(const Solution& solucao, int num_items, const Kna
 }
 
 // Função de busca tabu
-Solution BT(const KnapsackData& data, int criterio_parada) {
+Solution BT(const KnapsackData& data, int criterio_parada, int TABU_TENURE) {
     Solution solucao_inicial = {{}, 0, 0};
     Solution solucao = solucao_inicial;
     Solution melhor_solucao = solucao;
     int melhor_custo = custo(solucao, data);
     int iteracoes = 0;
+
+    deque<Solution> lista_tabu;
+    unordered_set<Solution, SolutionHash> set_tabu;
 
     while (iteracoes < criterio_parada) {
         iteracoes++;
@@ -64,7 +79,7 @@ Solution BT(const KnapsackData& data, int criterio_parada) {
 
         for (const auto& vizinho : vizinhos) {
             int custo_vizinho = custo(vizinho, data);
-            if (custo_vizinho < melhor_custo_vizinho) {
+            if (custo_vizinho < melhor_custo_vizinho && set_tabu.find(vizinho) == set_tabu.end()) {
                 melhor_vizinho = vizinho;
                 melhor_custo_vizinho = custo_vizinho;
             }
@@ -76,6 +91,14 @@ Solution BT(const KnapsackData& data, int criterio_parada) {
         }
 
         solucao = melhor_vizinho;
+
+        // Atualizar a lista tabu
+        lista_tabu.push_back(solucao);
+        set_tabu.insert(solucao);
+        if (lista_tabu.size() > static_cast<deque_size_type>(TABU_TENURE)) {
+            set_tabu.erase(lista_tabu.front());
+            lista_tabu.pop_front();
+        }
     }
 
     return melhor_solucao;
@@ -83,6 +106,7 @@ Solution BT(const KnapsackData& data, int criterio_parada) {
 
 int main(int argc, char *argv[]) {
     const char *filename;
+    int tenure = 5;
 
     // Check for the correct number of arguments
     if (argc < 2) {
@@ -92,20 +116,25 @@ int main(int argc, char *argv[]) {
 
     filename = argv[1];
 
+    // If alpha is provided, use it
+    if (argc >= 3) {
+        tenure = atof(argv[2]);
+    }
+
     // Lê os dados do arquivo
-    KnapsackData data = input("input.txt");
+    KnapsackData data = input(filename);
 
     // Definindo o critério de parada
     int criterio_parada = 1000;
 
     // Chamando a função de busca tabu
-    Solution melhor_solucao = BT(data, criterio_parada);
+    Solution melhor_solucao = BT(data, criterio_parada, tenure);
 
-  // Imprime a solução, o peso da solução e o lucro
-  cout << "Solution: ";
-  print_list(melhor_solucao.items);
-  cout << "Solution Weight: " << melhor_solucao.weight << endl;
-  cout << "Solution Profit: " << melhor_solucao.profit << endl;
+    // Imprime a solução, o peso da solução e o lucro
+    cout << "Solution: ";
+    print_list(melhor_solucao.items);
+    cout << "Solution Weight: " << melhor_solucao.weight << endl;
+    cout << "Solution Profit: " << melhor_solucao.profit << endl;
 
     return 0;
 }
