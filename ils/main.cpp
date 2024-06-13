@@ -7,6 +7,8 @@
 #include "../utils/lcr.hpp"
 #include "../utils/grasp_constructive.hpp"
 #include "../utils/local_search.hpp"
+#include "perturbate.hpp"
+#include "ils_constructive.hpp"
 
 using namespace std;
 
@@ -30,26 +32,40 @@ int main(int argc, char *argv[]) {
   KnapsackData data = input(filename);
 
   Solution solution_star;
+  Solution solution = grasp_constructive(
+    data.profits, 
+    data.weights, 
+    data.forfeit_pairs, 
+    data.num_items,
+    data.capacity, 
+    alpha
+  );  
+  Solution improved_solution = local_search(
+    solution,
+    data.profits, 
+    data.weights, 
+    data.forfeit_pairs, 
+    data.capacity
+  );
   int k = 0;
-  while (k < 50) {
-    Solution solution = grasp_constructive(
-      data.profits, 
+  while (k < 1) {
+    Solution perturbated_solution = perturbate(
+      solution, 
       data.weights, 
       data.forfeit_pairs, 
-      data.num_items,
-      data.capacity, 
-      alpha
+      data.capacity,
+      vector<int>()
     );
-    Solution improved_solution = local_search(
-      solution,
+    Solution improved_perturbated_solution = local_search(
+      perturbated_solution,
       data.profits, 
       data.weights, 
       data.forfeit_pairs, 
       data.capacity
     );
 
-    if (improved_solution.profit > solution_star.profit) {
-      solution_star = improved_solution;
+    if (improved_perturbated_solution.profit > solution_star.profit) {
+      solution_star = improved_perturbated_solution;
     }
     k++;
   }
