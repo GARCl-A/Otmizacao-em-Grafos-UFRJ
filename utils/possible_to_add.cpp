@@ -1,6 +1,6 @@
 #include <vector>
 
-#include "../grasp/grasp_constructive.hpp"
+#include "grasp_constructive.hpp"
 
 using namespace std;
 

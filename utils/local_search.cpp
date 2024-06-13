@@ -2,8 +2,8 @@
 #include <vector>
 
 #include "grasp_constructive.hpp"
-#include "../utils/lcr.hpp"
-#include "../utils/possible_to_add.hpp"
+#include "lcr.hpp"
+#include "possible_to_add.hpp"
 
 using namespace std;
 
@@ -16,8 +16,6 @@ Solution local_search(
 ) {
   // Inicializa improved_solution como uma cópia da solução atual
   Solution improved_solution = solution;
-
-  cout << "iniciando busca local" << endl;
   
   // Itera sobre os índices de improved_solution
   for (size_t i = 0; i < improved_solution.items.size(); ++i) {
@@ -29,11 +27,6 @@ Solution local_search(
       new_solution.items[i] = 0;
       new_solution.profit = improved_solution.profit - profits[i];
       new_solution.weight = improved_solution.weight - weights[i];
-
-      cout << "improved_solution" << endl;
-      print_list(improved_solution.items);
-      cout << "new_solution" << endl;
-      print_list(new_solution.items);
 
       // Tenta adicionar um item que não está 
       for (size_t j = 0; j < new_solution.items.size(); ++j) {
@@ -49,13 +42,10 @@ Solution local_search(
           ) &&
           new_solution.profit + profits[j] > improved_solution.profit
         ) { // Adiciona item na mochila
-            cout << "adicionou índice: " << j << endl;
             improved_solution = new_solution;
             improved_solution.items[j] = 1;
             improved_solution.profit += profits[j];
             improved_solution.weight += weights[j];
-            cout << "improved_solution" << endl;
-            print_list(improved_solution.items);
             i = 0;
         }
       }

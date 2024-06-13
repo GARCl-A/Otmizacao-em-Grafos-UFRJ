@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <ctime>
 
-#include "../utils/lcr.hpp"
+#include "lcr.hpp"
 #include "grasp_constructive.hpp"
 
 using namespace std;
@@ -38,7 +38,6 @@ Solution grasp_constructive(
 
   // Enquanto solution_line não estiver vazia
   while (evaluated_items > 0 || solution_weight == capacity) {
-    cout << "executando" << endl;
     // Construindo lcr a partir de solution_line
     vector<int> lcr_list = lcr(
       solution_line, 
@@ -46,7 +45,6 @@ Solution grasp_constructive(
       weights, 
       alpha
     );
-    cout << "lcr_list" << endl;
     print_list(lcr_list);
 
     // Escolhe um elemento aleatório de lcr
@@ -90,10 +88,7 @@ Solution grasp_constructive(
   }
 
   // Imprime a solução, o peso da solução e o lucro
-  cout << "Solution: ";
   print_list(solution);
-  cout << "Solution Weight: " << solution_weight << endl;
-  cout << "Solution Profit: " << solution_profit << endl;
 
   // Retorna a solução, o peso da solução e o lucro
   return { solution, solution_weight, solution_profit };
