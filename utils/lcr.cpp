@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <utility>
 
+#include "compare_pairs.hpp"
+
 using namespace std;
 
 void print_list(const vector<int> &list) {
@@ -27,10 +29,6 @@ void print_list(const vector<pair<float, int>> &list) {
     }
   }
   cout << endl;
-}
-
-bool compare_pairs(const pair<float, int> &a, const pair<float, int> &b) {
-  return a.first > b.first; // Classifica em ordem decrescente
 }
 
 vector<int> lcr(

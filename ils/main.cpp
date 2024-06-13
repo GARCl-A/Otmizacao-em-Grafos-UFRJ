@@ -32,14 +32,14 @@ int main(int argc, char *argv[]) {
   KnapsackData data = input(filename);
 
   Solution solution_star;
-  Solution solution = grasp_constructive(
-    data.profits, 
-    data.weights, 
-    data.forfeit_pairs, 
+  Solution solution = ils_constructive(
+    data.profits,
+    data.weights,
+    data.forfeit_pairs,
     data.num_items,
-    data.capacity, 
+    data.capacity,
     alpha
-  );  
+  );
   Solution improved_solution = local_search(
     solution,
     data.profits, 
@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
     data.capacity
   );
   int k = 0;
-  while (k < 1) {
+  while (k < 50) {
     Solution perturbated_solution = perturbate(
       solution, 
       data.weights, 
