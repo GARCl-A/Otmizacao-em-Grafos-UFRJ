@@ -5,7 +5,7 @@ CXX = g++
 CXXFLAGS = -std=c++11 -Wall -Wextra
 
 # Diretórios
-SUBDIRS = grasp ils
+SUBDIRS = grasp ils tabu
 
 # Lista de arquivos fonte e objeto
 SOURCES = $(wildcard *.cpp)
