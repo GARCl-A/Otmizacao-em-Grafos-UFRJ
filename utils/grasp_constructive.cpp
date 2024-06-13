@@ -26,11 +26,9 @@ Solution grasp_constructive(
       evaluated_items--;
     }
   }
-  print_list(solution_line);
 
   // Criação da solution
   vector<int> solution(num_items, 0);
-  print_list(solution);
 
   // Variáveis para manter o peso e o lucro da solução
   int solution_weight = 0;
@@ -45,7 +43,6 @@ Solution grasp_constructive(
       weights, 
       alpha
     );
-    print_list(lcr_list);
 
     // Escolhe um elemento aleatório de lcr
     srand(time(NULL)); // Inicializa o gerador de números aleatórios
@@ -65,9 +62,6 @@ Solution grasp_constructive(
     // Soma profits[elemento] a solution_profit
     solution_profit += profits[random_element];
 
-    print_list(solution_line);
-    print_list(solution);
-
     // Itera sobre solution_line para remover elementos
     for (size_t i = 0; i < solution_line.size(); i++) {
       // Remove elementos que weights[i] > (capacity - solution_weight)
@@ -84,11 +78,7 @@ Solution grasp_constructive(
         continue;
       }
     }
-    print_list(solution_line);
   }
-
-  // Imprime a solução, o peso da solução e o lucro
-  print_list(solution);
 
   // Retorna a solução, o peso da solução e o lucro
   return { solution, solution_weight, solution_profit };
