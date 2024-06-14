@@ -5,17 +5,24 @@ CXX = g++
 CXXFLAGS = -std=c++11 -Wall -Wextra
 
 # Lista de arquivos fonte e objeto
-SOURCES = main.cpp grasp_constructive.cpp local_search.cpp
+SOURCES = $(wildcard *.cpp) $(wildcard ../utils/*.cpp)
 OBJECTS = $(SOURCES:.cpp=.o)
 
+# Nome do executável
+EXECUTABLE = main
+
 # Regra padrão para compilar os objetos
-all: $(OBJECTS)
+all: $(EXECUTABLE)
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Limpeza dos arquivos objeto
+# Regra para linkar os objetos e criar o executável
+$(EXECUTABLE): $(OBJECTS)
+	$(CXX) $(OBJECTS) -o $(EXECUTABLE) -lstdc++
+
+# Limpeza dos arquivos objeto e executável
 clean:
-	rm -f $(OBJECTS)
+	rm -f $(OBJECTS) $(EXECUTABLE)
 
 .PHONY: all clean

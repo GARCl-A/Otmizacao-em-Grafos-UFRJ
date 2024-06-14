@@ -9,6 +9,10 @@ struct Solution {
   vector<int> items;
   int weight;
   int profit;
+
+  bool operator==(const Solution& other) const {
+    return items == other.items && weight == other.weight && profit == other.profit;
+  }
 };
 
 // Declaração da função para construir uma solução usando GRASP
