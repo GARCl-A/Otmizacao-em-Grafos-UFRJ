@@ -191,8 +191,8 @@ int main(int argc, char *argv[]) {
         std::cout << item << " ";
     }
     std::cout << endl;
-    std::cout << "Peso da Solucao: " << melhor_solucao.weight << endl;
-    std::cout << "Lucro da Solucao: " << melhor_solucao.profit << endl;
+    std::cout << "Solution Weight: " << melhor_solucao.weight << endl;
+    std::cout << "Solution Profit: " << melhor_solucao.profit << endl;
 
     return 0;
 }
