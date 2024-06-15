@@ -187,9 +187,7 @@ int main(int argc, char *argv[]) {
 
     // Imprime a solução, o peso da solução e o lucro
     std::cout << "Solucao: ";
-    for (int item : melhor_solucao.items) {
-        std::cout << item << " ";
-    }
+    print_list(melhor_solucao.items);
     std::cout << endl;
     std::cout << "Solution Weight: " << melhor_solucao.weight << endl;
     std::cout << "Solution Profit: " << melhor_solucao.profit << endl;
