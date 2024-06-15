@@ -3,7 +3,7 @@ import subprocess
 import numpy as np
 import time
 
-def run_instance(instance_path, executables, alphas=None, runs=5):
+def run_instance(instance_path, executables, alphas=None, runs=5, output_file=None):
     results = []
 
     for executable in executables:
@@ -43,7 +43,13 @@ def run_instance(instance_path, executables, alphas=None, runs=5):
             avg_time = np.mean(times)
             time_cv = np.std(times) / avg_time if avg_time != 0 else 0
 
-            results.append((instance_path, executable, alpha, best_profit, avg_profit, profit_cv, avg_time, time_cv))
+            result = (instance_path, executable, alpha, best_profit, avg_profit, profit_cv, avg_time, time_cv)
+            results.append(result)
+
+            if output_file:
+                with open(output_file, 'a') as f_out:
+                    f_out.write(f"{instance_path},{executable},{alpha},{best_profit},{avg_profit},{profit_cv},{avg_time},{time_cv}\n")
+                    print(f"Saved results for {instance_path} with {executable} and alpha {alpha} to {output_file}")
 
     return results
 
@@ -59,16 +65,11 @@ def main():
     with open(output_file, 'w') as f_out:
         f_out.write("Instance,Executable,Alpha,Best Profit,Average Profit,Profit CV,Average Time,Time CV\n")
 
-        for root, _, files in os.walk(instance_dir):
-            for file in files:
-                if file.endswith(".txt"):
-                    instance_path = os.path.join(root, file)
-                    results = run_instance(instance_path, executables, alphas=alphas if 'main' in executables[0] else None)
-
-                    for result in results:
-                        instance_path, executable, alpha, best_profit, avg_profit, profit_cv, avg_time, time_cv = result
-                        f_out.write(f"{instance_path},{executable},{alpha},{best_profit},{avg_profit},{profit_cv},{avg_time},{time_cv}\n")
-                        print(f"Processed {instance_path} with {executable} and alpha {alpha}")
+    for root, _, files in os.walk(instance_dir):
+        for file in files:
+            if file.endswith(".txt"):
+                instance_path = os.path.join(root, file)
+                run_instance(instance_path, executables, alphas=alphas if 'main' in executables[0] else None, output_file=output_file)
 
 if __name__ == "__main__":
     main()
