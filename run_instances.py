@@ -56,8 +56,8 @@ def run_instance(instance_path, executables, alphas=None, runs=5, output_file=No
 def main():
     instance_dir = 'dckp_instances'
     tabu_executables = ['./tabu/main']
-    grasp_executables = ['./grasp/main']
-    ils_executables = ['./ils/main']
+    grasp_executables = [] #['./grasp/main']
+    ils_executables = []#['./ils/main']
     alphas = [0.5, 0.75, 1.0]  # Different values of alpha to test for grasp and ils
     executables = tabu_executables + grasp_executables + ils_executables
     output_file = 'results.csv'
