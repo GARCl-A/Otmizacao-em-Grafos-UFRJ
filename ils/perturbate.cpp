@@ -9,6 +9,7 @@ using namespace std;
 Solution perturbate(
   const Solution& solution, 
   const vector<int>& weights, 
+  const vector<int>& profits, 
   const vector<vector<int>>& forfeit_pairs, 
   const int& capacity
 ) {
@@ -27,7 +28,7 @@ Solution perturbate(
       index_to_flip = rand() % perturbated_solution.items.size();
 
       if (perturbated_solution.items[index_to_flip] == 1) {
-      index_possible_to_add = true;
+        index_possible_to_add = true;
       } else {
         index_possible_to_add = possible_to_add(
           index_to_flip,
@@ -41,7 +42,15 @@ Solution perturbate(
 
     // Inverte índice sorteado
     int item_value = perturbated_solution.items[index_to_flip];
-    perturbated_solution.items[index_to_flip] = (item_value == 1) ? 0 : 1;
+    if (item_value == 1) {
+      perturbated_solution.items[index_to_flip] = 0;
+      perturbated_solution.weight -= weights[index_to_flip];
+      perturbated_solution.profit -= profits[index_to_flip];
+    } else {
+      perturbated_solution.items[index_to_flip] = 1;
+      perturbated_solution.weight += weights[index_to_flip];
+      perturbated_solution.profit += profits[index_to_flip];
+    }
   }
 
   return perturbated_solution;

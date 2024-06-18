@@ -51,7 +51,8 @@ int main(int argc, char *argv[]) {
   while (k < 50) {
     Solution perturbated_solution = perturbate(
       solution, 
-      data.weights, 
+      data.weights,
+      data.profits, 
       data.forfeit_pairs, 
       data.capacity
     );

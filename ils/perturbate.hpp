@@ -11,6 +11,7 @@ using namespace std;
 Solution perturbate(
   const Solution& solution, 
   const vector<int>& weights, 
+  const vector<int>& profits, 
   const vector<vector<int>>& forfeit_pairs, 
   const int& capacity
 );
