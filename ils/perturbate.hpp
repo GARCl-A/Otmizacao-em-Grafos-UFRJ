@@ -12,8 +12,7 @@ Solution perturbate(
   const Solution& solution, 
   const vector<int>& weights, 
   const vector<vector<int>>& forfeit_pairs, 
-  const int& capacity,
-  const vector<int>& less_frequent_items
+  const int& capacity
 );
 
 #endif /* PERTURBATE_HPP */

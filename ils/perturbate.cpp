@@ -10,8 +10,7 @@ Solution perturbate(
   const Solution& solution, 
   const vector<int>& weights, 
   const vector<vector<int>>& forfeit_pairs, 
-  const int& capacity,
-  const vector<int>& less_frequent_items = vector<int>() 
+  const int& capacity
 ) {
   // Inicializa perturbated_solution como uma cópia da solução atual
   Solution perturbated_solution = solution;
@@ -25,35 +24,18 @@ Solution perturbate(
     bool index_possible_to_add = false;
     int index_to_flip;
     while (!index_possible_to_add) {
-      if (less_frequent_items.size() == 0) {
-        index_to_flip = rand() % perturbated_solution.items.size();
+      index_to_flip = rand() % perturbated_solution.items.size();
 
-        if (perturbated_solution.items[index_to_flip] == 1) {
-        index_possible_to_add = true;
-        } else {
-          index_possible_to_add = possible_to_add(
-            index_to_flip,
-            perturbated_solution,
-            weights,
-            forfeit_pairs,
-            capacity
-          );
-        }
+      if (perturbated_solution.items[index_to_flip] == 1) {
+      index_possible_to_add = true;
       } else {
-        // Se recebe vetor de índices menos frequentes, sorteia índice da lista
-        for (size_t i = 1; i < less_frequent_items.size(); i++) {
-          if (possible_to_add(
-            index_to_flip,
-            perturbated_solution,
-            weights,
-            forfeit_pairs,
-            capacity
-          )) {
-            index_to_flip = less_frequent_items[i];
-            break;
-          }
-        }
-        index_possible_to_add = true;
+        index_possible_to_add = possible_to_add(
+          index_to_flip,
+          perturbated_solution,
+          weights,
+          forfeit_pairs,
+          capacity
+        );
       }
     }
 

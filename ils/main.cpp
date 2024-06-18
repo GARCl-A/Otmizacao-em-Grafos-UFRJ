@@ -53,8 +53,7 @@ int main(int argc, char *argv[]) {
       solution, 
       data.weights, 
       data.forfeit_pairs, 
-      data.capacity,
-      vector<int>()
+      data.capacity
     );
     Solution improved_perturbated_solution = local_search(
       perturbated_solution,
